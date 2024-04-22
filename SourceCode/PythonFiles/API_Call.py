@@ -42,7 +42,7 @@ for id in range(1, 10):
     listOfShows.append(testShow)
 
 
-#TODO: Instead of printing each show, upload them to the Firebase Database
+#TODO: John and Kenji. Instead of printing each show, upload them to the Firebase Database. Also change the For Loop to over a good number of shows. Maybe 20,100 or 500.
 
 for show in listOfShows:
     print(show)
