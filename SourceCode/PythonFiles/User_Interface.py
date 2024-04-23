@@ -37,7 +37,7 @@ st.title("Show Tracker")
 def display_shows_list(shows_list, list_name):
     for show in shows_list:
         with st.expander(f"{show}"):
-            st.write(f"**Genre:** {show.show_genre}")
+            st.write(f"**Genre:** {show.genre}")
             st.write(f"**Status:** {show.status}")
             st.write(f"**Summary:** {show.summary}")
             st.write(f"**Network:** {show.network}")
