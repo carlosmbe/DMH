@@ -52,7 +52,7 @@ def display_shows_list(shows_list, list_name):
                     move_show(show, st.session_state['all_shows'], st.session_state['watched_list'])
             elif list_name == 'watch_list':
                 if st.button("Remove from Watch List", key=f"remove_watch_{key_prefix}"):
-                    move_show(show, st.session_state['watch_list'], [])
+                    move_show(show, st.session_state['watch_list'], st.session_state['all_shows'])
                 if st.button("Move to Watched List", key=f"move_watched_from_watch_{key_prefix}"):
                     move_show(show, st.session_state['watch_list'], st.session_state['watched_list'])
             elif list_name == 'watched_list':
