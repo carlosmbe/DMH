@@ -32,6 +32,7 @@ def move_show(show, from_list, to_list):
     if show in from_list:
         from_list.remove(show)
         to_list.append(show)
+        st.rerun() #reruns the page to make the show list update correctly
 
 st.title("Show Tracker")
 
