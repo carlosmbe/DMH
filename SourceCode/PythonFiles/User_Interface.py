@@ -8,6 +8,7 @@ from API_Call import TvShow
 
 
 # Initialize shows with sample data
+#Show creation in the form of (showName, showYear, showRating, showGenre, showImage, status, summary, network)
 all_shows = [
     TvShow("Breaking Bad", 2008, "9.5", "Crime, Drama", None, "Ended", "A high school chemistry teacher turned meth kingpin.", "AMC"),
     TvShow("Sherlock", 2010, "9.1", "Crime, Drama, Mystery", None, "Ended", "A modern update finds the famous sleuth and his doctor partner solving crime in 21st century London.", "BBC One"),
