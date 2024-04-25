@@ -3,7 +3,7 @@ from copy import deepcopy
 from API_Call import TvShow
 
 
-# TODO: Cole Dubois. Instead of using all_shows as hardcoded TV Shows, fetch TV Shows from the FireBase Database
+# TODO: Cole DuBois. Instead of using all_shows as hardcoded TV Shows, fetch TV Shows from the FireBase Database
 # TODO: Blake Ebner Fix the User Interface. Right now, after moving a show to a new list, the website does not refresh proper causing it to show incorrect
 
 
