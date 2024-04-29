@@ -1,11 +1,15 @@
 ### Introduction
 In the digital era, television has evolved into a complex landscape with myriad shows across various genres and streaming platforms. To address the challenge of keeping track of these shows, we propose "ShowTracker," an iOS application designed to help users organize and manage their TV show interests effectively.
+
+The Web App can be accessed here: 
+https://showtracker.streamlit.app
+
 ### Project Objective
 The goal of "ShowTracker" is to create an iOS application that allows users to categorize and track TV shows in a personalized manner. The project focuses on utilizing an API to fetch TV show data and store it in a Firebase database, which the iOS app will access. This approach ensures real-time data accuracy and enhances the user experience.
 ### Technical Specifications
-1. iOS App Interface:
-Platform: iOS
-Languages: Swift, SwiftUI
+1. App Interface:
+Platform: iOS / Web
+Languages: Swift, SwiftUI, Python
 Features:
 Intuitive and engaging user interface
 Categorization of shows (‘Want To Watch,’ ‘Watched,’ ‘Haven’t Watched’)
