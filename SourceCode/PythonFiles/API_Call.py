@@ -4,23 +4,31 @@ import streamlit as st
 import firebase_admin
 from firebase_admin import credentials, firestore
 
+
 def initFirebase():
-    firebase_credentials = {
-        "type": st.secrets["firebase"]["type"],
-        "project_id": st.secrets["firebase"]["project_id"],
-        "private_key_id": st.secrets["firebase"]["private_key_id"],
-        "private_key": st.secrets["firebase"]["private_key"].replace('\\n', '\n'),
-        "client_email": st.secrets["firebase"]["client_email"],
-        "client_id": st.secrets["firebase"]["client_id"],
-        "auth_uri": st.secrets["firebase"]["auth_uri"],
-        "token_uri": st.secrets["firebase"]["token_uri"],
-        "auth_provider_x509_cert_url": st.secrets["firebase"]["auth_provider_x509_cert_url"],
-        "client_x509_cert_url": st.secrets["firebase"]["client_x509_cert_url"]
-    }
+    try:
+        # Fetch credentials from Streamlit's secrets
+        firebase_credentials = {
+            "type": st.secrets["firebase"]["type"],
+            "project_id": st.secrets["firebase"]["project_id"],
+            "private_key_id": st.secrets["firebase"]["private_key_id"],
+            "private_key": st.secrets["firebase"]["private_key"].replace('\\n', '\n'),
+            "client_email": st.secrets["firebase"]["client_email"],
+            "client_id": st.secrets["firebase"]["client_id"],
+            "auth_uri": st.secrets["firebase"]["auth_uri"],
+            "token_uri": st.secrets["firebase"]["token_uri"],
+            "auth_provider_x509_cert_url": st.secrets["firebase"]["auth_provider_x509_cert_url"],
+            "client_x509_cert_url": st.secrets["firebase"]["client_x509_cert_url"]
+        }
 
-    cred = credentials.Certificate(firebase_credentials)
-    firebase_admin.initialize_app(cred)
+        # Create a credential object with the fetched credentials
+        cred = credentials.Certificate(firebase_credentials)
 
+        # Initialize the Firebase app with the created credentials
+        firebase_admin.initialize_app(cred)
+        print("Firebase Initialized Successfully")
+    except Exception as e:
+        print(f"Failed to initialize Firebase: {e}")
 
 listOfShows = []
 
