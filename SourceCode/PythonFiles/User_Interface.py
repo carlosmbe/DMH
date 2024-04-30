@@ -4,10 +4,9 @@ from API_Call import TvShow
 from data_collection import showList
 
 # Initialize shows with sample data
-all_shows = [
-    TvShow("Breaking Bad", 2008, "9.5", "Crime, Drama", None, "Ended", "A high school chemistry teacher turned meth kingpin.", "AMC"),
-    TvShow("Sherlock", 2010, "9.1", "Crime, Drama, Mystery", None, "Ended", "A modern update finds the famous sleuth and his doctor partner solving crime in 21st century London.", "BBC One"),
-]
+all_shows = []
+for show in showList:
+    all_shows.append(show)
 
 def init_state():
     print("Initializing state...")
