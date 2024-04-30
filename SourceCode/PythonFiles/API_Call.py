@@ -4,7 +4,7 @@ import streamlit as st
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-
+## TODO: IF YOU WANT TO RUN THIS LOCALLY. Change this Function. I have left another comment in it with instructions.
 def initFirebase():
     try:
         # Fetch credentials from Streamlit's secrets
@@ -22,6 +22,8 @@ def initFirebase():
         }
 
         # Create a credential object with the fetched credentials
+        ## TODO: IF YOU WANT TO RUN THIS LOCALLY CHANGE CRED TO THIS
+        # cred = credentials.Certificate("StAuth.json") Put path to your key here. Then comment out the next line
         cred = credentials.Certificate(firebase_credentials)
 
         # Initialize the Firebase app with the created credentials
@@ -79,9 +81,6 @@ def fetchTvShows(numberOfShows):
             pass #just skips the show causing problems
 
 if __name__ == "__main__":
-    ##TODO: Cole, please pick a good number of shows you think the app should have
-    ##TODO: MAKE SURE TO CHANGE PATH TO MATCH YOUR OWN
-
     initFirebase()
     db = firestore.client()
     fetchTvShows(100)
