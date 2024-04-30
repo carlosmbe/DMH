@@ -22,7 +22,8 @@ class TvShow:
 
     def __str__(self):
         ### I created this for testing purposes.
-        return f"{self.showName} - {self.showYear} - {self.showRating}"
+        return f"{self.showName} - {self.showYear} - {self.showRating} - {self.showImage} - {self.genre} - {self.status} - {self.network}"
+
 
     def __hash__(self):
         return hash((self.showName, self.showYear, self.network))
@@ -44,12 +45,14 @@ def fetchTvShows(numberOfShows):
         # Convert the Response to JSON
         show = json.loads(response.text)
 
-        # Create a TvShow Object using the JSON we received
-        testShow = TvShow(show["name"], show["premiered"], show["rating"], show["genres"], show["image"], show["status"], show["summary"], show["network"])
+        try: #added this try to address some shows not having a premiered date and causing an error
+            # Create a TvShow Object using the JSON we received
+            testShow = TvShow(show["name"], show["premiered"], show["rating"], show["genres"], show["image"], show["status"], show["summary"], show["network"])
 
-        # Add Show to the List of Shows
-        listOfShows.append(testShow)
-
+            # Add Show to the List of Shows
+            listOfShows.append(testShow)
+        except:
+            pass #just skips the show causing problems
 
 if __name__ == "__main__":
     ##TODO: Cole, please pick a good number of shows you think the app should have
@@ -57,7 +60,7 @@ if __name__ == "__main__":
     cred = credentials.Certificate("StAuth.json")
     firebase_admin.initialize_app(cred)
     db = firestore.client()
-    fetchTvShows(10)
+    fetchTvShows(100)
     for show in listOfShows:
         db.collection("Shows").document(show.showName).set({
             "showName": show.showName,

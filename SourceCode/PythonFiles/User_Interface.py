@@ -1,38 +1,33 @@
 import streamlit as st
 from copy import deepcopy
 from API_Call import TvShow
-
-
-# TODO: Cole DuBois. Instead of using all_shows as hardcoded TV Shows, fetch TV Shows from the FireBase Database
-# TODO: Blake Ebner Fix the User Interface. Right now, after moving a show to a new list, the website does not refresh proper causing it to show incorrect
-
+from data_collection import showList
 
 # Initialize shows with sample data
-#Show creation in the form of (showName, showYear, showRating, showGenre, showImage, status, summary, network)
 all_shows = [
     TvShow("Breaking Bad", 2008, "9.5", "Crime, Drama", None, "Ended", "A high school chemistry teacher turned meth kingpin.", "AMC"),
     TvShow("Sherlock", 2010, "9.1", "Crime, Drama, Mystery", None, "Ended", "A modern update finds the famous sleuth and his doctor partner solving crime in 21st century London.", "BBC One"),
 ]
 
 def init_state():
-    print("Initializing state...")  # Debug statement
+    print("Initializing state...")
     if 'all_shows' not in st.session_state:
-        st.session_state['all_shows'] = deepcopy(all_shows)
-        print("all_shows initialized")  # Debug statement
+        st.session_state['all_shows'] = set(deepcopy(all_shows))  # Convert list to set
+        print("all_shows initialized")
     if 'watch_list' not in st.session_state:
-        st.session_state['watch_list'] = []
-        print("watch_list initialized")  # Debug statement
+        st.session_state['watch_list'] = set()  # Initialize as set
+        print("watch_list initialized")
     if 'watched_list' not in st.session_state:
-        st.session_state['watched_list'] = []
-        print("watched_list initialized")  # Debug statement
+        st.session_state['watched_list'] = set()  # Initialize as set
+        print("watched_list initialized")
 
 init_state()  # Ensure this is called before any UI components
 
-def move_show(show, from_list, to_list):
-    if show in from_list:
-        from_list.remove(show)
-        to_list.append(show)
-        st.rerun() #reruns the page to make the show list update correctly
+def move_show(show, from_set, to_set):
+    if show in from_set and show not in to_set:
+        from_set.remove(show)
+        to_set.add(show)
+        st.rerun() # Rerun the page to update the show lists
 
 st.title("Show Tracker")
 
@@ -45,11 +40,22 @@ def display_shows_list(shows_list, list_name):
             st.write(f"**Network:** {show.network}")
             # Generate unique keys for each button action
             key_prefix = f"{list_name}_{id(show)}"
+
             if list_name == 'all_shows':
                 if st.button("Add to Watch List", key=f"add_watch_{key_prefix}"):
-                    move_show(show, st.session_state['all_shows'], st.session_state['watch_list'])
+                    if show not in st.session_state['watch_list'] and show not in st.session_state['watched_list']:
+                        move_show(show, st.session_state['all_shows'], st.session_state['watch_list'])
+                    else:
+                        st.warning("Show is already in a list.")
+
+
                 if st.button("Add to Watched List", key=f"add_watched_{key_prefix}"):
-                    move_show(show, st.session_state['all_shows'], st.session_state['watched_list'])
+                    if show not in st.session_state['watched_list'] and show not in st.session_state['watched_list']:
+                        move_show(show, st.session_state['all_shows'], st.session_state['watched_list'])
+                    else:
+                        st.warning("Show is already in a list.")
+
+
             elif list_name == 'watch_list':
                 if st.button("Remove from Watch List", key=f"remove_watch_{key_prefix}"):
                     move_show(show, st.session_state['watch_list'], st.session_state['all_shows'])
@@ -61,10 +67,50 @@ def display_shows_list(shows_list, list_name):
                 if st.button("Move to All Shows", key=f"move_all_from_watched_{key_prefix}"):
                     move_show(show, st.session_state['watched_list'], st.session_state['all_shows'])
 
-# Display each list with interactive components
-st.write("## All Shows List")
-display_shows_list(st.session_state['all_shows'], 'all_shows')
-st.write("## Watch List")
-display_shows_list(st.session_state['watch_list'], 'watch_list')
-st.write("## Watched List")
-display_shows_list(st.session_state['watched_list'], 'watched_list')
+# Search function
+def search_shows(query):
+    filtered_shows = [show for show in all_shows if query.lower() in show.showName.lower()]
+    return filtered_shows
+
+def display_search_results(filtered_shows):
+    if filtered_shows:
+        st.write('Search results:')
+        for show in filtered_shows:
+            with st.expander(f"{show.showName} ({show.showYear})"):
+                st.write(f"**Genre:** {show.genre}")
+                st.write(f"**Status:** {show.status}")
+                st.write(f"**Summary:** {show.summary}")
+                st.write(f"**Network:** {show.network}")
+                # Generate unique keys for each button action
+                key_prefix = f"{show.showName}_{show.showYear}"
+
+                # Check conditions for adding to Watch List
+                if show not in st.session_state['watch_list'] and show not in st.session_state['watched_list']:
+                    if st.button("Add to Watch List", key=f"add_watch_{key_prefix}"):
+                        move_show(show, filtered_shows, st.session_state['watch_list'])
+                        # Optionally, remove the show from search results after adding to watch list
+                        filtered_shows.remove(show)
+
+                # Check conditions for adding to Watched List
+                if show not in st.session_state['watched_list'] and show not in st.session_state['watch_list']:
+                    if st.button("Add to Watched List", key=f"add_watched_{key_prefix}"):
+                        move_show(show, filtered_shows, st.session_state['watched_list'])
+                        # Optionally, remove the show from search results after adding to watched list
+                        filtered_shows.remove(show)
+
+
+st.write("##  Search All Shows")
+search_query = st.text_input('Search all shows:', '')
+if search_query:
+    filtered_shows = search_shows(search_query)
+    display_search_results(filtered_shows)
+else:
+    st.write("Enter a search query above to find a TV show.")
+
+tab1, tab2, tab3 = st.tabs(["All Shows", "Watch List", "Watched List"])
+with tab1:
+    display_shows_list(st.session_state['all_shows'], 'all_shows')
+with tab2:
+    display_shows_list(st.session_state['watch_list'], 'watch_list')
+with tab3:
+    display_shows_list(st.session_state['watched_list'], 'watched_list')
