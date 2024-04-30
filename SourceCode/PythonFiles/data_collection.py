@@ -1,7 +1,9 @@
 import firebase_admin
 import re
 from firebase_admin import  firestore
-from API_Call import TvShow
+from API_Call import TvShow, initFirebase
+
+initFirebase()
 
 def remove_html_tags(html):
     # Remove HTML tags using regular expressions

@@ -1,9 +1,25 @@
 import requests
 import json
-
+import streamlit as st
 import firebase_admin
 from firebase_admin import credentials, firestore
 
+def initFirebase():
+    firebase_credentials = {
+        "type": st.secrets["firebase"]["type"],
+        "project_id": st.secrets["firebase"]["project_id"],
+        "private_key_id": st.secrets["firebase"]["private_key_id"],
+        "private_key": st.secrets["firebase"]["private_key"].replace('\\n', '\n'),
+        "client_email": st.secrets["firebase"]["client_email"],
+        "client_id": st.secrets["firebase"]["client_id"],
+        "auth_uri": st.secrets["firebase"]["auth_uri"],
+        "token_uri": st.secrets["firebase"]["token_uri"],
+        "auth_provider_x509_cert_url": st.secrets["firebase"]["auth_provider_x509_cert_url"],
+        "client_x509_cert_url": st.secrets["firebase"]["client_x509_cert_url"]
+    }
+
+    cred = credentials.Certificate(firebase_credentials)
+    firebase_admin.initialize_app(cred)
 
 
 listOfShows = []
@@ -57,8 +73,7 @@ def fetchTvShows(numberOfShows):
 if __name__ == "__main__":
     ##TODO: Cole, please pick a good number of shows you think the app should have
     ##TODO: MAKE SURE TO CHANGE PATH TO MATCH YOUR OWN
-    cred = credentials.Certificate("StAuth.json")
-    firebase_admin.initialize_app(cred)
+
     db = firestore.client()
     fetchTvShows(100)
     for show in listOfShows:
