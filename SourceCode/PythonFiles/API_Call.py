@@ -4,10 +4,7 @@ import json
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-##TODO: MAKE SURE TO CHANGE PATH TO MATCH YOUR OWN
-cred = credentials.Certificate("StAuth.json")
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+
 
 listOfShows = []
 
@@ -26,6 +23,12 @@ class TvShow:
     def __str__(self):
         ### I created this for testing purposes.
         return f"{self.showName} - {self.showYear} - {self.showRating}"
+
+    def __hash__(self):
+        return hash((self.showName, self.showYear, self.network))
+
+    def __eq__(self, other):
+        return self.showName == other.showName and self.showYear == other.showYear
 
 def fetchTvShows(numberOfShows):
     for id in range(1, numberOfShows):
@@ -48,17 +51,21 @@ def fetchTvShows(numberOfShows):
         listOfShows.append(testShow)
 
 
-##TODO: Cole, please pick a good number of shows you think the app should have
-fetchTvShows(10)
-
-for show in listOfShows:
-    db.collection("Shows").document(show.showName).set({
-        "showName": show.showName,
-        "showYear": show.showYear,
-        "showRating": show.showRating,
-        "showImage": show.showImage,
-        "genre": show.genre,
-        "status": show.status,
-        "summary": show.summary,
-        "network": show.network
-    })
+if __name__ == "__main__":
+    ##TODO: Cole, please pick a good number of shows you think the app should have
+    ##TODO: MAKE SURE TO CHANGE PATH TO MATCH YOUR OWN
+    cred = credentials.Certificate("StAuth.json")
+    firebase_admin.initialize_app(cred)
+    db = firestore.client()
+    fetchTvShows(10)
+    for show in listOfShows:
+        db.collection("Shows").document(show.showName).set({
+            "showName": show.showName,
+            "showYear": show.showYear,
+            "showRating": show.showRating,
+            "showImage": show.showImage,
+            "genre": show.genre,
+            "status": show.status,
+            "summary": show.summary,
+            "network": show.network
+        })
