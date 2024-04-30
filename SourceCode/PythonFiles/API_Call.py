@@ -1,9 +1,13 @@
 import requests
 import json
 
+import firebase_admin
+from firebase_admin import credentials, firestore
 
-
-### This Code Gets 10 TV Shows and Adds them to a List of Shows
+##TODO: MAKE SURE TO CHANGE PATH TO MATCH YOUR OWN
+cred = credentials.Certificate("StAuth.json")
+firebase_admin.initialize_app(cred)
+db = firestore.client()
 
 listOfShows = []
 
@@ -44,6 +48,17 @@ def fetchTvShows(numberOfShows):
         listOfShows.append(testShow)
 
 
-#TODO: John and Kenji. Instead of printing each show, upload them to the Firebase Database. Also change the For Loop to over a good number of shows. Maybe 20,100 or 500.
+##TODO: Cole, please pick a good number of shows you think the app should have
+fetchTvShows(10)
 
-
+for show in listOfShows:
+    db.collection("Shows").document(show.showName).set({
+        "showName": show.showName,
+        "showYear": show.showYear,
+        "showRating": show.showRating,
+        "showImage": show.showImage,
+        "genre": show.genre,
+        "status": show.status,
+        "summary": show.summary,
+        "network": show.network
+    })
