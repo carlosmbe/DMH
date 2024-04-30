@@ -82,6 +82,7 @@ if __name__ == "__main__":
     ##TODO: Cole, please pick a good number of shows you think the app should have
     ##TODO: MAKE SURE TO CHANGE PATH TO MATCH YOUR OWN
 
+    initFirebase()
     db = firestore.client()
     fetchTvShows(100)
     for show in listOfShows:
