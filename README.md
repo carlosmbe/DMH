@@ -8,8 +8,14 @@ https://showtracker.streamlit.app
 The goal of "ShowTracker" is to create a web application that allows users to categorize and track TV shows in a personalized manner. The project focuses on utilizing an API to fetch TV show data and store it in a Firebase database, which the web app app will access. This approach ensures real-time data accuracy and enhances the user experience.
 
 ### Technical Specifications
-1. App Interface:
+1. App Interface
+
+
+
 Platform: Web
+
+
+
 Languages: Python
 
 
@@ -20,15 +26,26 @@ Features:
 - Real-time updates from the Firebase database
 
 
-2. Firebase Database:
-Type: Cloud Firestore or Realtime Database
+2. Firebase Database
+
+
+Type: Cloud Firestore
+
+
+
 Functionality:
 - Store and manage TV show data
 - Handle user preferences and data synchronization
 - Seamless integration with the web app
 
-3. Python Script for TV Show Data Retrieval:
+3. Python Script for TV Show Data Retrieval
+
+
+
 Language: Python
+
+
+
 Frameworks/Libraries: Firebase Admin SDK, requests
 
 ### Functionality:
@@ -38,11 +55,11 @@ Frameworks/Libraries: Firebase Admin SDK, requests
 
 
 ### Project Timeline
-Stage 1: Project setup, Firebase configuration, and API selection
-Stage 2: Development of the Python script for API data retrieval and Firebase integration
-Stage 3: Design and development of the app interface
-Stage 4: Integration of the app with the Firebase database and initial testing
-Stage 5: Comprehensive testing, debugging, and project presentation
+- Stage 1: Project setup, Firebase configuration, and API selection
+- Stage 2: Development of the Python script for API data retrieval and Firebase integration
+- Stage 3: Design and development of the app interface
+- Stage 4: Integration of the app with the Firebase database and initial testing
+- Stage 5: Comprehensive testing, debugging, and project presentation
 
 
 ### Conclusion
