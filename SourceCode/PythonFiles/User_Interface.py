@@ -3,6 +3,14 @@ from copy import deepcopy
 from API_Call import TvShow
 from data_collection import showList
 
+@st.cache_resource
+def get_persistent_storage():
+    return {
+        'all_shows': set(),
+        'watch_list': set(),
+        'watched_list': set()
+    }
+
 # Initialize shows with sample data
 all_shows = []
 for show in showList:
@@ -10,15 +18,19 @@ for show in showList:
 
 def init_state():
     print("Initializing state...")
-    if 'all_shows' not in st.session_state:
-        st.session_state['all_shows'] = set(deepcopy(all_shows))  # Convert list to set
+    storage = get_persistent_storage()  # Get the storage
+
+    if not storage['all_shows']:
+        storage['all_shows'] = set(deepcopy(all_shows))  # Convert list to set
         print("all_shows initialized")
+
+    if 'all_shows' not in st.session_state:
+        st.session_state['all_shows'] = storage['all_shows']
     if 'watch_list' not in st.session_state:
-        st.session_state['watch_list'] = set()  # Initialize as set
-        print("watch_list initialized")
+        st.session_state['watch_list'] = storage['watch_list']
     if 'watched_list' not in st.session_state:
-        st.session_state['watched_list'] = set()  # Initialize as set
-        print("watched_list initialized")
+        st.session_state['watched_list'] = storage['watched_list']
+
 
 init_state()  # Ensure this is called before any UI components
 
