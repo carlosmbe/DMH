@@ -110,17 +110,20 @@ def display_search_results(filtered_shows):
                         filtered_shows.remove(show)
 
 
-st.write("##  Search All Shows")
-search_query = st.text_input('Search all shows:', '')
-if search_query:
-    filtered_shows = search_shows(search_query)
-    display_search_results(filtered_shows)
-else:
-    st.write("Enter a search query above to find a TV show.")
-
 tab1, tab2, tab3 = st.tabs(["All Shows", "Watch List", "Watched List"])
 with tab1:
+
+    st.write("##  Search All Shows")
+    search_query = st.text_input('Search all shows:', '')
+
+    if search_query:
+        filtered_shows = search_shows(search_query)
+        display_search_results(filtered_shows)
+    else:
+        st.write("Enter a search query above to find a TV show.")
+
     display_shows_list(st.session_state['all_shows'], 'all_shows')
+
 with tab2:
     display_shows_list(st.session_state['watch_list'], 'watch_list')
 with tab3:
